@@ -1,21 +1,59 @@
 package teamsmartphone1.com.tvent;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 
+import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
+    EventList events;
+    private LocationManager location_manager;
+    private LocationListener location_listener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            events = new EventList(loc);
+            try { location_manager.removeUpdates(location_listener); }
+            catch (SecurityException e) { e.printStackTrace(); }
+            Log.d("TVENT", "Location Changed " + loc.latitude + " " + loc.longitude);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -24,6 +62,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    private boolean init() {
+        Log.d("TVENT", "initing");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.d("TVENT", "We have location permissions");
+        } else {
+            Log.d("TVENT", "We do not have location permissiosn");
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_CONTACTS}, 0);
+            return false;
+        }
+        location_manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        location_manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, location_listener);
+        return true;
+    }
+
+    public void onMapClick(LatLng point) {
+
+    }
+
+    public boolean onMarkerClick(Marker marker) {
+        return true;
+    }
 
     /**
      * Manipulates the map once available.
