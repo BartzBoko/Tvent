@@ -1,6 +1,7 @@
-package teamsmartphone1.com.tvent;
+package teamsmartphone1.com.tvent.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,8 +20,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+import teamsmartphone1.com.tvent.EventList;
+import teamsmartphone1.com.tvent.R;
 
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+    private boolean visitedSplashScreen = false;
     private GoogleMap mMap;
     EventList events;
     private LocationManager location_manager;
@@ -53,6 +57,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!visitedSplashScreen) {
+            visitedSplashScreen = true;
+            startActivity(new Intent(this, SplashScreenActivity.class));
+            return;
+        }
         init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
