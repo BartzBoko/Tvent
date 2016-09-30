@@ -2,6 +2,7 @@ package teamsmartphone1.com.tvent.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import com.google.android.gms.location.LocationServices;
  */
 public class SplashScreenActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    public static final String SPLASH_LOCATION = "Splash Location";
     private int MY_PERMISSION_REQUEST_FINE_LOCATION = 4;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -73,7 +75,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
         if (mLocation != null) {
             locationReceived = true;
             if (dataReceived) {
-                finish();
+                finishSplash();
             }
         } else {
             //Let's try the whole thing again
@@ -111,6 +113,13 @@ public class SplashScreenActivity extends AppCompatActivity implements
         }
     }
 
+    public void finishSplash() {
+        Intent result = new Intent();
+        result.putExtra(SPLASH_LOCATION, mLocation);
+        setResult(0, result);
+        finish();
+    }
+
     /**
      * Background task to get data from the server.
      */
@@ -126,7 +135,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
             super.onPostExecute(success);
             dataReceived = true;
             if (locationReceived) {
-                finish();
+                finishSplash();
             }
         }
     }
