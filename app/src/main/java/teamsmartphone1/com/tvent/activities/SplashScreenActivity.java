@@ -25,6 +25,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Permission;
 import com.google.android.gms.location.LocationServices;
 
+import teamsmartphone1.com.tvent.R;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -41,6 +43,10 @@ public class SplashScreenActivity extends AppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+        setContentView(R.layout.activity_splash_screen);
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        getActionBar().hide();
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -52,13 +58,17 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
     @Override
     protected void onStart() {
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
         super.onStop();
     }
 
@@ -89,7 +99,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_PERMISSION_REQUEST_FINE_LOCATION
                 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            Toast.makeText(this, "App needs this permission to function!", Toast.LENGTH_LONG);
+            Toast.makeText(this, "App needs this permission to function!", Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(this,
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSION_REQUEST_FINE_LOCATION);
@@ -114,10 +124,9 @@ public class SplashScreenActivity extends AppCompatActivity implements
     }
 
     public void finishSplash() {
-        Intent result = new Intent();
-        result.putExtra(SPLASH_LOCATION, mLocation);
-        setResult(0, result);
-        finish();
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra(SPLASH_LOCATION, mLocation);
+        startActivity(intent);
     }
 
     /**

@@ -27,7 +27,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int SPLASH_SCREEN_REQUEST_CODE = 3;
     private boolean visitedSplashScreen = false;
     private GoogleMap mMap;
-    EventList events;
+    private EventList events;
     private Location mLocation;
     private LocationManager location_manager;
     private LocationListener location_listener = new LocationListener() {
@@ -59,9 +59,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
         if (!visitedSplashScreen) {
-            startActivityForResult(new Intent(this, SplashScreenActivity.class),
-                    SPLASH_SCREEN_REQUEST_CODE);
+            startActivity(new Intent(this, SplashScreenActivity.class));
+            finish();
             return;
         }
         init();
