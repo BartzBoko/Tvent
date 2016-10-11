@@ -25,10 +25,9 @@ import teamsmartphone1.com.tvent.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
     private static final int SPLASH_SCREEN_REQUEST_CODE = 3;
-    private boolean visitedSplashScreen = false;
     private GoogleMap mMap;
     private EventList events;
-    private Location mLocation;
+    private Location mLocation = null;
     private LocationManager location_manager;
     private LocationListener location_listener = new LocationListener() {
         @Override
@@ -60,8 +59,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        if (!visitedSplashScreen) {
+        Intent splashData = getIntent();
+        if (splashData != null) {
+            mLocation = splashData.getParcelableExtra(SplashScreenActivity.SPLASH_LOCATION);
+        }
+        if (mLocation == null) {
             startActivity(new Intent(this, SplashScreenActivity.class));
             finish();
             return;
@@ -96,13 +98,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public boolean onMarkerClick(Marker marker) {
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        visitedSplashScreen = true;
-        mLocation = (Location) data.getParcelableExtra(SplashScreenActivity.SPLASH_LOCATION);
     }
 
     /**

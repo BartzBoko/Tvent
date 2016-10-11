@@ -127,6 +127,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra(SPLASH_LOCATION, mLocation);
         startActivity(intent);
+        finish();
     }
 
     /**
