@@ -8,13 +8,19 @@ import java.util.HashSet;
  * Created by Bruce on 9/14/2016.
  */
 public class Event {
-    int id;
-    LatLng geotag;
-    HashSet<Tweet> tweets;
+    private int id;
+    private LatLng geotag;
+    private HashSet<Tweet> tweets;
 
     public Event(int i, LatLng g, HashSet<Tweet> t) {
         id = i;
         geotag = g;
         tweets = t;
     }
+
+    public int getId() { return id; }
+
+    public LatLng getGeotag() { return geotag; }
+
+
 }

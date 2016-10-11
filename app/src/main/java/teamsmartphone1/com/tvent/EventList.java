@@ -23,7 +23,6 @@ public class EventList {
     }
 
     public EventList(LatLng loc) {
-        if (refresh) return;
         String req = String.format("http://domain/v1/data/events?latlng=%f%%2C%f", loc.latitude, loc.longitude);
         Log.d("TVENT", req);
         String res = HTTPRequest.sendRequest(req);
@@ -56,4 +55,10 @@ public class EventList {
     }
 
     public void need_refresh() { refresh = true; }
+
+    public boolean get_refresh() { return refresh; }
+
+    public HashSet<Event> getEvents() {
+        return event_set;
+    }
 }
