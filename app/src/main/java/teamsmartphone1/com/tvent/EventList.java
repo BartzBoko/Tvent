@@ -26,7 +26,9 @@ public class EventList {
         String req = String.format("http://domain/v1/data/events?latlng=%f%%2C%f", loc.latitude, loc.longitude);
         Log.d("TVENT", req);
         String res = HTTPRequest.sendRequest(req);
-
+        if (res == null) {
+            return;
+        }
         JSONObject response = null;
         try {
             response = new JSONObject(res);

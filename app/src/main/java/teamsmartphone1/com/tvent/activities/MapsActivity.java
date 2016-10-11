@@ -35,6 +35,7 @@ import teamsmartphone1.com.tvent.R;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+    private static final String TAG = "MapsActivity";
     private static final int SPLASH_SCREEN_REQUEST_CODE = 3;
     private Location mLocation = null;
     private boolean visitedSplashScreen = false;
@@ -43,7 +44,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private EventList events;
     private LocationManager location_manager;
     private LocationRequest mLocationRequest;
-    private Location mLocation;
     private LatLng mCurrentLocation;
     /*private LocationListener location_listener = new LocationListener() {
         @Override
@@ -87,16 +87,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
         Intent splashData = getIntent();
         if (splashData != null) {
             mLocation = splashData.getParcelableExtra(SplashScreenActivity.SPLASH_LOCATION);
+            Log.d("location", "location" + mLocation);
         }
         if (mLocation == null) {
-        
             startActivity(new Intent(this, SplashScreenActivity.class));
             finish();
             return;
-        }*/
+        }
         init();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
