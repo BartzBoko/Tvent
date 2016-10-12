@@ -6,6 +6,8 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashSet;
+import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +15,12 @@ import org.json.JSONObject;
 
 /**
  * Created by Bruce on 9/21/2016.
+ *
+ * @author Bruce
+ * @version 1.0
  */
 public class EventList {
+    private static final String TAG = "EventList";
     private static HashSet<Event> event_set;
     private static boolean refresh;
 
@@ -22,10 +28,16 @@ public class EventList {
         super();
     }
 
+    /**
+     * EventList constructor for one LatLng
+     * @param loc Location to add to eventlist
+     */
     public EventList(LatLng loc) {
-        String req = String.format("http://domain/v1/data/events?latlng=%f%%2C%f", loc.latitude, loc.longitude);
-        Log.d("TVENT", req);
+        String req = String.format(Locale.US, "http://domain/v1/data/events?latlng=%f%%2C%f",
+                loc.latitude, loc.longitude);
+        Log.d(TAG, "req=" + req);
         String res = HTTPRequest.sendRequest(req);
+        Log.d(TAG, "res=" + res);
         if (res == null) {
             return;
         }
@@ -33,7 +45,7 @@ public class EventList {
         try {
             response = new JSONObject(res);
         } catch (JSONException e) {
-            Log.d("EVENT_LIST", "Failed to get JSON object");
+            Log.e(TAG, "Failed to get JSON object");
         }
         assert response != null;
         //now get the array of "movies"data
@@ -50,7 +62,7 @@ public class EventList {
                 }
                 event_set.add(new Event(id, loc, tweet_set));
             } catch (JSONException e) {
-                Log.d("EVENT_LIST", "Failed to get JSON object");
+                Log.e(TAG, "Failed to get JSON object");
             }
         }
         refresh = false;

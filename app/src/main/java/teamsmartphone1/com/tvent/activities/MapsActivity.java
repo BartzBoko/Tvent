@@ -91,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent splashData = getIntent();
         if (splashData != null) {
             mLocation = splashData.getParcelableExtra(SplashScreenActivity.SPLASH_LOCATION);
-            Log.d("location", "location" + mLocation);
+            Log.d(TAG, "location" + mLocation);
         }
         if (mLocation == null) {
             startActivity(new Intent(this, SplashScreenActivity.class));
@@ -121,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-        Log.d("TVENT", "initing");
+        Log.d(TAG, "initing");
         /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             Log.d("TVENT", "We have location permissions");
@@ -165,13 +165,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d("TVENT", "Connected to Google API");
+        Log.d(TAG, "Connected to Google API");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Log.d("TVENT", "We have location permissions");
+            Log.d(TAG, "We have location permissions");
             //mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         } else {
-            Log.d("TVENT", "No permissions");
+            Log.d(TAG, "No permissions");
             return;
         }
 
@@ -195,9 +195,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         if (events != null && !events.get_refresh()) return;
-        Log.d("TVENT", "Location Updated");
+        Log.d(TAG, "Location Updated " + location);
+        Log.d(TAG, "location lat=" + location.getLatitude() + " long=" + location.getLongitude());
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
         events = new EventList(loc);
+        if (events.getEvents() == null) {
+            return;
+        }
         for (Event e : events.getEvents()) {
             mMap.addMarker(new MarkerOptions().position(e.getGeotag()));
         }

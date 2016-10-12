@@ -45,13 +45,13 @@ public class SplashScreenActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate");
+        Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_splash_screen);
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-        Log.e(TAG, "onCreate");
+        Log.d(TAG, "onCreate");
         if (mGoogleApiClient == null) {
-            Log.e(TAG, "ApiClient null");
+            Log.d(TAG, "ApiClient null");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -65,7 +65,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
     protected void onStart() {
         Log.d(TAG, "onStart");
         if (mGoogleApiClient != null) {
-            Log.e(TAG, "onStart client not null");
+            Log.d(TAG, "onStart client not null");
             mGoogleApiClient.connect();
         }
         super.onStart();
@@ -73,9 +73,9 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
     @Override
     protected void onStop() {
-        Log.e(TAG, "onStop");
+        Log.d(TAG, "onStop");
         if (mGoogleApiClient != null) {
-            Log.e(TAG, "onStop client not null");
+            Log.d(TAG, "onStop client not null");
             mGoogleApiClient.disconnect();
         }
         super.onStop();
@@ -84,26 +84,26 @@ public class SplashScreenActivity extends AppCompatActivity implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         // If location availible
-        Log.e(TAG, "onConnected");
+        Log.d(TAG, "onConnected");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG, "on connected permission not granted");
+            Log.d(TAG, "on connected permission not granted");
             ActivityCompat.requestPermissions(this,
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSION_REQUEST_FINE_LOCATION);
         }
-        Log.e(TAG, "check for location");
+        Log.d(TAG, "check for location");
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
-            Log.e(TAG, "location not null");
+            Log.d(TAG, "location not null");
             locationReceived = true;
             if (dataReceived) {
-                Log.e(TAG, "data received");
+                Log.d(TAG, "data received");
                 finishSplash();
             }
         } else {
             //Let's try the whole thing again
-            Log.e(TAG, "location null");
+            Log.d(TAG, "location null");
             onConnected(bundle);
         }
     }
@@ -112,11 +112,11 @@ public class SplashScreenActivity extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.e(TAG, "request permissions result");
+        Log.d(TAG, "request permissions result");
         if (requestCode == MY_PERMISSION_REQUEST_FINE_LOCATION
                 && grantResults.length !=  0
                 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            Log.e(TAG, "permission denied");
+            Log.d(TAG, "permission denied");
             Toast.makeText(this, "App needs this permission to function!", Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(this,
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
@@ -126,16 +126,16 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(TAG, "connected failed");
+        Log.d(TAG, "connected failed");
         Toast.makeText(this, "Unable to connect.", Toast.LENGTH_SHORT).show();
         System.exit(-1);
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.e(TAG, "connection suspended");
+        Log.d(TAG, "connection suspended");
         if (mGoogleApiClient == null) {
-            Log.e(TAG, "connection suspended client null");
+            Log.d(TAG, "connection suspended client null");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -145,8 +145,8 @@ public class SplashScreenActivity extends AppCompatActivity implements
     }
 
     public void finishSplash() {
-        Log.e(TAG, "finish splash");
-        Log.e(TAG, "location=" + mLocation);
+        Log.d(TAG, "finish splash");
+        Log.d(TAG, "location=" + mLocation);
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra(SPLASH_LOCATION, mLocation);
         startActivity(intent);
@@ -160,17 +160,17 @@ public class SplashScreenActivity extends AppCompatActivity implements
         @Override
         protected Boolean doInBackground(Void... params) {
             //call to server
-            Log.e(TAG, "doInBackground");
+            Log.d(TAG, "doInBackground");
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
-            Log.e(TAG, "onPostExecute");
+            Log.d(TAG, "onPostExecute");
             dataReceived = true;
             if (locationReceived) {
-                Log.e(TAG, "locationReceived");
+                Log.d(TAG, "locationReceived");
                 finishSplash();
             }
         }
