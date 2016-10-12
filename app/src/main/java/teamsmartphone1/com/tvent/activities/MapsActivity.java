@@ -32,7 +32,10 @@ import teamsmartphone1.com.tvent.Event;
 import teamsmartphone1.com.tvent.EventList;
 import teamsmartphone1.com.tvent.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,GoogleApiClient.ConnectionCallbacks,
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener,
+        GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     private static final String TAG = "MapsActivity";
@@ -136,11 +139,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return true;
     }
 
+    @Override
     public void onMapClick(LatLng point) {
-
+        //There's nothing to do here, right?
     }
 
+    @Override
     public boolean onMarkerClick(Marker marker) {
+        //Take this fancy marker, and then get the tag.
+        //Hopefully this works:
+        Object event = marker.getTag();
+        if (event.getClass() != Event.class) {
+            return false;
+        }
+        //@Harmeet this is where you would call your activity:
+        //(Event) event
+
+        //Something along the lines of this :
+        //Intent intent = new Intent(this, TweetsActivity.class);
+        //intent.putExtra("Event", (Event) event);
+        //startActivity(intent);
         return true;
     }
 
@@ -176,10 +194,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-
-
-
     }
 
     @Override
