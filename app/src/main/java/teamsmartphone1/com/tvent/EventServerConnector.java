@@ -35,7 +35,7 @@ public class EventServerConnector {
     }
 
     private Event getEventHeaders(int eventid) {
-        // String request = URL_ENDPOINT + "/v2/data/event/" + eventid + ?&count=0";
+        // String request = URL_ENDPOINT + "/v2/data/event/" + eventid + ?&count=0";;
         String request = "http://www.mockbin.org/bin/8454d0a9-fd40-40d0-ad1d-3598c999f2b6?foo=bar&foo=baz";
         String res = HTTPRequest.sendRequest(request);
         //Log.d("ESC", res);
