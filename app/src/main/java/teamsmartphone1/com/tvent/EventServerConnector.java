@@ -67,7 +67,7 @@ public class EventServerConnector {
                 JSONObject jsono  = tweetArray.getJSONObject(i);
                 String text = jsono.getString("text");
                 Log.d("ESC", text);
-                outtweet = new Tweet();
+                outtweet = new Tweet(text);
                 tweets.add(outtweet);
             }
         } catch (JSONException e) {e.printStackTrace();}

@@ -9,4 +9,8 @@ public class Tweet {
     private LatLng geotag;
     private String hashtag;
     private String message;
+
+    public Tweet(String inmessage) {
+        message = inmessage;
+    }
 }
