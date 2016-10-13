@@ -9,11 +9,13 @@ import java.util.HashSet;
  */
 public class Event {
     private int id;
+    private String hashtag;
     private LatLng geotag;
     private HashSet<Tweet> tweets;
 
-    public Event(int i, LatLng g, HashSet<Tweet> t) {
+    public Event(int i, String ht, LatLng g, HashSet<Tweet> t) {
         id = i;
+        hashtag = ht;
         geotag = g;
         tweets = t;
     }
@@ -22,5 +24,7 @@ public class Event {
 
     public LatLng getGeotag() { return geotag; }
 
+    public String getHashtag() { return hashtag; }
 
+    public HashSet<Tweet> getTweets() { return tweets; }
 }

@@ -60,7 +60,7 @@ public class EventList {
                 for (int j = 0; j < tweets.length(); j++) {
                     tweet_set.add((Tweet)tweets.opt(j));
                 }
-                event_set.add(new Event(id, loc, tweet_set));
+                event_set.add(new Event(id, "", loc, tweet_set));
             } catch (JSONException e) {
                 Log.e(TAG, "Failed to get JSON object");
             }
@@ -71,6 +71,8 @@ public class EventList {
     public void need_refresh() { refresh = true; }
 
     public boolean get_refresh() { return refresh; }
+
+    public void setEvents(HashSet<Event> events) { event_set = events; }
 
     public HashSet<Event> getEvents() {
         return event_set;

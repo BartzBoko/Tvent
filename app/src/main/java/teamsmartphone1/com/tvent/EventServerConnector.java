@@ -14,11 +14,11 @@ public class EventServerConnector {
     int TWEETCOUNT = 5;
     boolean ISSERVERCONNECTED = true;
 
-    public ArrayList<Event> getEvents(LatLng lat) {
+    public HashSet<Event> getEvents(LatLng lat) {
         // String request = URL_ENDPOINT + "/v2/data/events?latlng=" + latlng + "&count=" + EVENTCOUNT;
         String request = "http://www.mockbin.org/bin/f8965994-347e-4117-9845-c4d02ed44b42?foo=bar&foo=baz";
 
-        ArrayList<Event> events = new ArrayList<Event>();
+        HashSet<Event> events = new HashSet<>();
         String res = HTTPRequest.sendRequest(request);
         //Log.d("ESC", res);;
         try {
@@ -46,7 +46,7 @@ public class EventServerConnector {
             Double lat = jsonRootObject.getDouble("lat");
             Double lng = jsonRootObject.getDouble("lng");
             LatLng ll = new LatLng(lat,lng);
-            returnevent = new Event(eventid, ll, null);
+            returnevent = new Event(eventid, hashtag, ll, null);
             //Log.d("ESC", hashtag);
         } catch (JSONException e) {e.printStackTrace();}
         return returnevent;

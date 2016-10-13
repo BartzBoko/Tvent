@@ -24,8 +24,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Permission;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import teamsmartphone1.com.tvent.Event;
+import teamsmartphone1.com.tvent.EventList;
+import teamsmartphone1.com.tvent.EventServerConnector;
 import teamsmartphone1.com.tvent.R;
 
 /**
@@ -33,7 +40,7 @@ import teamsmartphone1.com.tvent.R;
  * status bar and navigation/system bar) with user interaction.
  */
 public class SplashScreenActivity extends AppCompatActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     public static final String SPLASH_LOCATION = "Splash Location";
     private static final String TAG = "SplashScreenActivity";
     private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 4;
@@ -41,6 +48,8 @@ public class SplashScreenActivity extends AppCompatActivity implements
     private Location mLocation;
     private boolean locationReceived = false;
     private boolean dataReceived = false;
+    private LocationRequest mLocationRequest;
+    private EventList events;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +68,10 @@ public class SplashScreenActivity extends AppCompatActivity implements
                     .build();
         }
         new GetDataFromServerTasks().execute();
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(1000);
+
     }
 
     @Override
@@ -103,8 +116,8 @@ public class SplashScreenActivity extends AppCompatActivity implements
             }
         } else {
             //Let's try the whole thing again
-            Log.d(TAG, "location null");
-            onConnected(bundle);
+            Log.d(TAG, "location is null, querying for location");
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
     }
 
@@ -145,12 +158,29 @@ public class SplashScreenActivity extends AppCompatActivity implements
     }
 
     public void finishSplash() {
+
+        events = new EventList();
+        EventServerConnector connector = new EventServerConnector();
+        events.setEvents(connector.getEvents(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+
         Log.d(TAG, "finish splash");
         Log.d(TAG, "location=" + mLocation);
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra(SPLASH_LOCATION, mLocation);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        /*if (events != null && !events.get_refresh()) return;
+        Log.d(TAG, "Location Updated " + location);
+        Log.d(TAG, "location lat=" + location.getLatitude() + " long=" + location.getLongitude());
+        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+        events = new EventList(loc);
+        if (events.getEvents() == null) {
+            return;
+        }*/
     }
 
     /**
