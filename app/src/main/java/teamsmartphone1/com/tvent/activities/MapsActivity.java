@@ -28,6 +28,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import teamsmartphone1.com.tvent.Event;
 import teamsmartphone1.com.tvent.EventList;
@@ -119,19 +120,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapClick(LatLng point) {
         //There's nothing to do here, right?
+        Log.d(TAG, "onMapClick");
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         //Take this fancy marker, and then get the tag.
         //Hopefully this works:
+        Log.d(TAG, "onMarkerClick");
         Object event = marker.getTag();
-        if (event.getClass() != Event.class) {
+        Log.d(TAG, "onClick event" + event);
+        if (event == null || event.getClass() != Event.class) {
             return false;
         }
         
         Intent intent = new Intent(this, TweetsActivity.class);
-        intent.putExtra("Tweets", new ArrayList<Tweet>(((Event) event).getTweets()));
+        Event realEvent = (Event) event;
+        HashSet<Tweet> set = realEvent.getTweets();
+        if (set == null) {
+            Log.d(TAG, "onMarkerClick set null");
+        }
+        ArrayList list = new ArrayList<Tweet>(set);
+        intent.putExtra("Tweets", list);
         startActivity(intent);
         return true;
     }
@@ -153,12 +163,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
 
         for (Event e : events.getEvents()) {
-            mMap.addMarker(new MarkerOptions().position(e.getGeotag()).title(e.getHashtag()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            Marker marker = mMap.addMarker(new MarkerOptions().position(e.getGeotag()).title(e.getHashtag()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            marker.setTag(e);
         }
 
         LatLng userPos = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(userPos).title("You"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userPos));
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMarkerClickListener(this);
     }
 
     /*@Override
