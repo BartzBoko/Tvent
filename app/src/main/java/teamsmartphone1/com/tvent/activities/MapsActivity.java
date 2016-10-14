@@ -129,10 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (event.getClass() != Event.class) {
             return false;
         }
-        //@Harmeet this is where you would call your activity:
-        //(Event) event
-
-        //Something along the lines of this :
+        
         Intent intent = new Intent(this, TweetsActivity.class);
         intent.putExtra("Tweets", new ArrayList<Tweet>(((Event) event).getTweets()));
         startActivity(intent);

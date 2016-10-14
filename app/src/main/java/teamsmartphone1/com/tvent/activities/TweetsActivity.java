@@ -12,6 +12,12 @@ import teamsmartphone1.com.tvent.R;
 import teamsmartphone1.com.tvent.Tweet;
 import teamsmartphone1.com.tvent.adapters.TweetsAdapter;
 
+/**
+ * This class represents a TweetsActivity object
+ *
+ * @author Harmeet S. Bindra
+ * @version 1.0
+ */
 public class TweetsActivity extends AppCompatActivity {
     private static ArrayList<Tweet> tweets;
     private TweetsAdapter mTweetsAdapter;
