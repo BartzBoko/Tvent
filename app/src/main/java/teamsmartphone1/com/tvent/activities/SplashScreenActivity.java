@@ -188,7 +188,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
             Log.d(TAG, "doInBackground");
             events = new EventList();
             EventServerConnector connector = new EventServerConnector();
-            events.setEvents(connector.getEvents(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+            events.setEvents(connector.getEvents(null));
             return true;
         }
 

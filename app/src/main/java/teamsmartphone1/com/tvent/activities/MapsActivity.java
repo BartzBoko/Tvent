@@ -161,7 +161,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (Event e : events.getEvents()) {
             Marker marker = mMap.addMarker(new MarkerOptions().position(e.getGeotag()).title(e.getHashtag()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
             marker.setTag(e);
-            marker.setTitle("PirateParty");
             marker.showInfoWindow();
         }
 
