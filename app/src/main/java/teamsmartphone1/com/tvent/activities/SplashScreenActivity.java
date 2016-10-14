@@ -158,7 +158,6 @@ public class SplashScreenActivity extends AppCompatActivity implements
     }
 
     public void finishSplash() {
-
         Log.d(TAG, "finish splash");
         Log.d(TAG, "location=" + mLocation);
         Intent intent = new Intent(this, MapsActivity.class);
@@ -195,7 +194,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(Boolean success) {
-            super.onPostxExecute(success);
+            super.onPostExecute(success);
             Log.d(TAG, "onPostExecute");
             dataReceived = true;
             if (locationReceived) {
