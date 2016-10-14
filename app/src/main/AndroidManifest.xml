@@ -44,7 +44,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TweetsActivity"></activity>
+        <activity
+            android:name=".activities.TweetsActivity"
+            android:parentActivityName=".activities.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="teamsmartphone1.com.tvent.activities.MapsActivity"/>
+        </activity>
     </application>
 
 </manifest>

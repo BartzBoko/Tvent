@@ -3,15 +3,19 @@ package teamsmartphone1.com.tvent.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 //import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -78,11 +82,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
         Intent splashData = getIntent();
         if (splashData != null) {
             mLocation = splashData.getParcelableExtra(SplashScreenActivity.SPLASH_LOCATION);
-            Log.d(TAG, "location" + mLocation);
         }
         if (mLocation == null) {
             startActivity(new Intent(this, SplashScreenActivity.class));
@@ -95,13 +97,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     private boolean init() {
-
-
-
-        Log.d(TAG, "initing");
         events = new EventList();
         /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -120,16 +123,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapClick(LatLng point) {
         //There's nothing to do here, right?
-        Log.d(TAG, "onMapClick");
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         //Take this fancy marker, and then get the tag.
         //Hopefully this works:
-        Log.d(TAG, "onMarkerClick");
         Object event = marker.getTag();
-        Log.d(TAG, "onClick event" + event);
         if (event == null || event.getClass() != Event.class) {
             return false;
         }
@@ -161,6 +161,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (Event e : events.getEvents()) {
             Marker marker = mMap.addMarker(new MarkerOptions().position(e.getGeotag()).title(e.getHashtag()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
             marker.setTag(e);
+            marker.setTitle("PirateParty");
+            marker.showInfoWindow();
         }
 
         LatLng userPos = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
