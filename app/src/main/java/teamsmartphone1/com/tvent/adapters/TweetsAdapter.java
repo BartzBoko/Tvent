@@ -47,6 +47,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         if (list != null && !list.isEmpty()) {
             mTweets.addAll(list);
         }
+        mTweets.add(new Tweet("Team smartphone rocks"));
     }
 
     @Override

@@ -33,11 +33,6 @@ public class TweetsActivity extends AppCompatActivity {
         mRecyclerMovies.setLayoutManager(layoutManager);
         Intent tweetData = getIntent();
         tweets = (HashSet<Tweet>) tweetData.getSerializableExtra("Tweets");
-        // creating a fake tweet. Incase there's none in the server
-        Tweet tweet = new Tweet("Team smartphone rocks");
-        if (tweets != null) {
-            tweets.add(tweet);
-        }
         mTweetsAdapter = new TweetsAdapter(this, tweets);
         mRecyclerMovies.setAdapter(mTweetsAdapter);
     }
