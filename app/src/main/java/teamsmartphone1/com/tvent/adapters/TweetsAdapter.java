@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import teamsmartphone1.com.tvent.R;
 import teamsmartphone1.com.tvent.Tweet;
@@ -39,11 +40,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
      *
      * @param context is the context of the app
      */
-    public TweetsAdapter(Context context, ArrayList<Tweet> list) {
+    public TweetsAdapter(Context context, HashSet<Tweet> list) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
-        mTweets = list;
-
+        mTweets = new ArrayList<Tweet>();
+        if (list != null && !list.isEmpty()) {
+            mTweets.addAll(list);
+        }
     }
 
     @Override

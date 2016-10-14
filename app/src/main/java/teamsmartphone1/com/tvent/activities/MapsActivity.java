@@ -137,11 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, TweetsActivity.class);
         Event realEvent = (Event) event;
         HashSet<Tweet> set = realEvent.getTweets();
-        if (set == null) {
-            Log.d(TAG, "onMarkerClick set null");
-        }
-        ArrayList list = new ArrayList<Tweet>(set);
-        intent.putExtra("Tweets", list);
+        intent.putExtra("Tweets", set);
         startActivity(intent);
         return true;
     }

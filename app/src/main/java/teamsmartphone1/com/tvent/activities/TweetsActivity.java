@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import teamsmartphone1.com.tvent.R;
 import teamsmartphone1.com.tvent.Tweet;
@@ -19,7 +20,7 @@ import teamsmartphone1.com.tvent.adapters.TweetsAdapter;
  * @version 1.0
  */
 public class TweetsActivity extends AppCompatActivity {
-    private static ArrayList<Tweet> tweets;
+    private static HashSet<Tweet> tweets;
     private TweetsAdapter mTweetsAdapter;
 
     private RecyclerView mRecyclerMovies;
@@ -29,13 +30,14 @@ public class TweetsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tweets);
         mRecyclerMovies = (RecyclerView) findViewById(R.id.listTweets);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        tweets = new ArrayList<>();
         mRecyclerMovies.setLayoutManager(layoutManager);
         Intent tweetData = getIntent();
-        tweets = (ArrayList<Tweet>) tweetData.getSerializableExtra("Tweets");
+        tweets = (HashSet<Tweet>) tweetData.getSerializableExtra("Tweets");
         // creating a fake tweet. Incase there's none in the server
         Tweet tweet = new Tweet("Team smartphone rocks");
-        tweets.add(tweet);
+        if (tweets != null) {
+            tweets.add(tweet);
+        }
         mTweetsAdapter = new TweetsAdapter(this, tweets);
         mRecyclerMovies.setAdapter(mTweetsAdapter);
     }
