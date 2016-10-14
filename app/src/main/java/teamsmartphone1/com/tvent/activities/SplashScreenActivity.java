@@ -159,10 +159,6 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
     public void finishSplash() {
 
-        events = new EventList();
-        EventServerConnector connector = new EventServerConnector();
-        events.setEvents(connector.getEvents(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
-
         Log.d(TAG, "finish splash");
         Log.d(TAG, "location=" + mLocation);
         Intent intent = new Intent(this, MapsActivity.class);
@@ -191,12 +187,15 @@ public class SplashScreenActivity extends AppCompatActivity implements
         protected Boolean doInBackground(Void... params) {
             //call to server
             Log.d(TAG, "doInBackground");
+            events = new EventList();
+            EventServerConnector connector = new EventServerConnector();
+            events.setEvents(connector.getEvents(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+            super.onPostxExecute(success);
             Log.d(TAG, "onPostExecute");
             dataReceived = true;
             if (locationReceived) {
