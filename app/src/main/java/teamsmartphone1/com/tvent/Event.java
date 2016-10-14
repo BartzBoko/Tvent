@@ -27,4 +27,5 @@ public class Event {
     public String getHashtag() { return hashtag; }
 
     public HashSet<Tweet> getTweets() { return tweets; }
+    public void setTweets(HashSet<Tweet> t) { tweets = t; }
 }

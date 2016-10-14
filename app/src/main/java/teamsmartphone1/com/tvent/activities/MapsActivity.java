@@ -36,6 +36,7 @@ import java.util.HashSet;
 
 import teamsmartphone1.com.tvent.Event;
 import teamsmartphone1.com.tvent.EventList;
+import teamsmartphone1.com.tvent.EventServerConnector;
 import teamsmartphone1.com.tvent.R;
 import teamsmartphone1.com.tvent.Tweet;
 
@@ -129,14 +130,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(Marker marker) {
         //Take this fancy marker, and then get the tag.
         //Hopefully this works:
-        Object event = marker.getTag();
-        if (event == null || event.getClass() != Event.class) {
+        Object object = marker.getTag();
+        if (object == null || object.getClass() != Event.class) {
             return false;
         }
-        
+
+        Event event = (Event) object;
+        EventServerConnector ev = new EventServerConnector();
+        event.setTweets(ev.getTweets((event).getId()));
         Intent intent = new Intent(this, TweetsActivity.class);
-        Event realEvent = (Event) event;
-        HashSet<Tweet> set = realEvent.getTweets();
+        HashSet<Tweet> set = event.getTweets();
         intent.putExtra("Tweets", set);
         startActivity(intent);
         return true;
