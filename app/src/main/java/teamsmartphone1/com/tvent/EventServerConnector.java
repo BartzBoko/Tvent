@@ -16,7 +16,7 @@ public class EventServerConnector {
     final int GETHEADERS = 2;
     final int GETTWEETS = 3;
 
-    public ArrayList<Event> getEvents(LatLng lat) {
+    public HashSet<Event> getEvents(LatLng lat) {
 
         String request = URL_ENDPOINT + "/v2/data/events?latlng=35.0136831%2c-97.3611394&count=" + EVENTCOUNT;
         if (lat != null) {
@@ -26,7 +26,7 @@ public class EventServerConnector {
         }
         //String request = "http://www.mockbin.org/bin/9f202603-2e7d-4ea2-b251-be444609beed?foo=bar&foo=baz";
 
-        ArrayList<Event> events = new ArrayList<Event>();
+        HashSet<Event> events = new HashSet<Event>();
         String res = HTTPRequest.sendRequest(request);
         // Log.d("ESC", res);
         HashSet<String> eventlist = JsonFixerEvent(res);

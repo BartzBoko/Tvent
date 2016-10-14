@@ -161,7 +161,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
         events = new EventList();
         EventServerConnector connector = new EventServerConnector();
-        events.setEvents(connector.getEvents(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+        events.setEvents(connector.getEvents(null));
 
         Log.d(TAG, "finish splash");
         Log.d(TAG, "location=" + mLocation);
