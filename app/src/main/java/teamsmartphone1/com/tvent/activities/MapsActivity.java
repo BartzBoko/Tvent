@@ -27,9 +27,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Places;
 
+import java.util.ArrayList;
+
 import teamsmartphone1.com.tvent.Event;
 import teamsmartphone1.com.tvent.EventList;
 import teamsmartphone1.com.tvent.R;
+import teamsmartphone1.com.tvent.Tweet;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener,
@@ -130,9 +133,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //(Event) event
 
         //Something along the lines of this :
-        //Intent intent = new Intent(this, TweetsActivity.class);
-        //intent.putExtra("Event", (Event) event);
-        //startActivity(intent);
+        Intent intent = new Intent(this, TweetsActivity.class);
+        intent.putExtra("Tweets", new ArrayList<Tweet>(((Event) event).getTweets()));
+        startActivity(intent);
         return true;
     }
 
