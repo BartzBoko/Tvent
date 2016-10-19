@@ -42,49 +42,20 @@ import teamsmartphone1.com.tvent.Tweet;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnMarkerClickListener
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener
         /*LocationListener*/ {
     private static final String TAG = "MapsActivity";
-    private static final int SPLASH_SCREEN_REQUEST_CODE = 3;
     private Location mLocation = null;
-    private boolean visitedSplashScreen = false;
+    private Marker mMarker;
     private GoogleMap mMap;
     private EventList events;
-    private LocationManager location_manager;
-    private LocationRequest mLocationRequest;
-    private LatLng mCurrentLocation;
-    /*private LocationListener location_listener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-            events = new EventList(loc);
-            try { location_manager.removeUpdates(location_listener); }
-            catch (SecurityException e) { e.printStackTrace(); }
-            Log.d("TVENT", "Location Changed " + loc.latitude + " " + loc.longitude);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent splashData = getIntent();
-        if (splashData != null) {
+        if (mLocation == null && splashData != null) {
             mLocation = splashData.getParcelableExtra(SplashScreenActivity.SPLASH_LOCATION);
         }
         if (mLocation == null) {
@@ -124,15 +95,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapClick(LatLng point) {
         //There's nothing to do here, right?
+        if (mMarker != null) {
+            mMarker.hideInfoWindow();
+        }
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         //Take this fancy marker, and then get the tag.
         //Hopefully this works:
+        marker.showInfoWindow();
+        mMarker = marker;
+        return true;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
         Object object = marker.getTag();
         if (object == null || object.getClass() != Event.class) {
-            return false;
+            return;
         }
 
         Event event = (Event) object;
@@ -142,7 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         HashSet<Tweet> set = event.getTweets();
         intent.putExtra("Tweets", set);
         startActivity(intent);
-        return true;
     }
 
     /**
@@ -164,14 +144,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (Event e : events.getEvents()) {
             Marker marker = mMap.addMarker(new MarkerOptions().position(e.getGeotag()).title(e.getHashtag()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
             marker.setTag(e);
-            marker.showInfoWindow();
         }
 
         LatLng userPos = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(userPos).title("You"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(userPos));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPos, 13));
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     /*@Override

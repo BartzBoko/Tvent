@@ -47,11 +47,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         if (list != null && !list.isEmpty()) {
             mTweets.addAll(list);
         }
-        mTweets.add(new Tweet("Team smartphone1 rocks"));
+        /*mTweets.add(new Tweet("Team smartphone1 rocks"));
         mTweets.add(new Tweet("Team smartphone1 rocks +1"));
         mTweets.add(new Tweet("Team smartphone1 rocks +2"));
         mTweets.add(new Tweet("Team smartphone1 rocks +3"));
-        mTweets.add(new Tweet("Team smartphone1 rocks +4"));
+        mTweets.add(new Tweet("Team smartphone1 rocks +4"));*/
 
     }
 

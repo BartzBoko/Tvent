@@ -46,8 +46,6 @@ public class SplashScreenActivity extends AppCompatActivity implements
     private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 4;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
-    private boolean locationReceived = false;
-    private boolean dataReceived = false;
     private LocationRequest mLocationRequest;
     private EventList events;
 
@@ -67,7 +65,6 @@ public class SplashScreenActivity extends AppCompatActivity implements
                     .addApi(LocationServices.API)
                     .build();
         }
-        new GetDataFromServerTasks().execute();
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setInterval(1000);
@@ -109,11 +106,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
             Log.d(TAG, "location not null");
-            locationReceived = true;
-            if (dataReceived) {
-                Log.d(TAG, "data received");
-                finishSplash();
-            }
+            new GetDataFromServerTasks().execute();
         } else {
             //Let's try the whole thing again
             Log.d(TAG, "location is null, querying for location");
@@ -188,7 +181,11 @@ public class SplashScreenActivity extends AppCompatActivity implements
             Log.d(TAG, "doInBackground");
             events = new EventList();
             EventServerConnector connector = new EventServerConnector();
-            events.setEvents(connector.getEvents(null));
+            if (mLocation != null) {
+                events.setEvents(connector.getEvents(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+            } else {
+                events.setEvents(connector.getEvents(null));
+            }
             return true;
         }
 
@@ -196,11 +193,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             Log.d(TAG, "onPostExecute");
-            dataReceived = true;
-            if (locationReceived) {
-                Log.d(TAG, "locationReceived");
-                finishSplash();
-            }
+            finishSplash();
         }
     }
 }
