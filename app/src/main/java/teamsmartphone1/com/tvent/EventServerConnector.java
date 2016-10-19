@@ -22,7 +22,7 @@ public class EventServerConnector {
             fakeEndPoint = true;
         }
         String request = "http://mockbin.org/bin/470c5a22-c8a6-4efa-96e3-0d1240d6ee47?foo=bar&foo=baz";
-        // String request = URL_ENDPOINT + "/v2/data/events?latlng=35.0136831%2c-97.3611394&count=" + EVENTCOUNT;
+        /// String request = URL_ENDPOINT + "/v2/data/events?latlng=35.0136831%2c-97.3611394&count=" + EVENTCOUNT;
         if (fakeEndPoint == false) {
             String latt = lat.toString().substring(lat.toString().indexOf("(")+1,lat.toString().indexOf(","));
             String longg = lat.toString().substring(lat.toString().indexOf(",")+1,lat.toString().length()-1);
